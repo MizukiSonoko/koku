@@ -1,4 +1,4 @@
-# koku
+# koku (frontend)
 
 ## Build Setup
 
