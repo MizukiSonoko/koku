@@ -1,0 +1,101 @@
+//!
+//! The 'koku' contract entry.
+//!
+use std::collections::MTreeMap;
+
+type Address = u160;
+type ContractAddress = u160;
+type Amount = u248;
+type Id = u64;
+
+enum Role {
+    EXECUTOR = 0,
+    LEGISLATOR = 1,
+    JUDGEMENT = 2
+}
+
+struct Group {
+    id: Id,
+    role: Role,
+}
+
+contract Koku {
+    groups: std::collections::MTreeMap<Id, Group>;
+    persons: std::collections::MTreeMap<Address, Id>;
+    rules: std::collections::MTreeMap<ContractAddress, Id>;
+
+    pub fn new() -> Self {
+        Self {
+            groups: MTreeMap,
+            persons: MTreeMap,
+            rules: MTreeMap
+        }
+    }
+
+    pub fn create_group(mut self, id: Id, role: Role) {
+        self.groups.insert(id, Group {id: id, role: role});
+    }
+
+    pub fn attach_rule_to_group(mut self, rule: ContractAddress, groupId: Id) {
+        require(
+            self.groups.contains(groupId),
+            "group should be exist",
+        );
+        self.rules.insert(rule, groupId);
+    }
+
+    pub fn detach_rule_from_group(mut self, rule: ContractAddress) {
+        require(
+            self.rules.contains(rule),
+            "rule should be exist",
+        );
+        self.rules.remove(rule);
+    }
+
+    pub fn attach_person_to_group(mut self, address: Address, groupId: Id) {
+        require(
+            self.groups.contains(groupId),
+            "group should be exist",
+        );
+        self.persons.insert(address, groupId);
+    }
+
+    pub fn detach_person_from_group(mut self, address: Address) {
+        require(
+            self.persons.contains(address),
+            "address should be exist",
+        );
+        self.persons.remove(address);
+    }
+
+    pub fn get_group(self, groupId: Id) -> Group{
+        let (group, exist) = self.groups.get(groupId);
+        group
+    }
+
+    pub fn get_group_by_person(self, address: Address) -> Group{
+        require(
+            self.persons.contains(address),
+            "address should be exist",
+        );
+        let (groupId, _) = self.persons.get(address);
+        let (group, exist) = self.groups.get(groupId);
+        group
+    }
+
+    pub fn get_group_by_rule(self, rule: ContractAddress) -> Group{
+        require(
+            self.rules.contains(rule),
+            "address should be exist",
+        );
+        let (groupId, _) = self.rules.get(rule);
+        let (group, exist) = self.groups.get(groupId);
+        group
+    }
+
+}
+
+#[test]
+fn ordinar() {
+    require(2 + 2 == 4, "The laws of the Universe have been broken");
+}
