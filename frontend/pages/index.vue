@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <div>
-      <Logo />
       <h1 class="title">
         koku
       </h1>
@@ -22,7 +21,6 @@ import {
   SetupContext
 } from "@vue/composition-api";
 import accountModule, { Account } from "@/store/modules/account"
-import { zkSyncClient } from "@/service/zkSyncClient"
 import { Web3Service } from "@/service/web3"
 
 export default defineComponent({
