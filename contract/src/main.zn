@@ -14,85 +14,130 @@ enum Role {
     JUDGEMENT = 2
 }
 
-struct Group {
-    id: Id,
-    role: Role,
+enum CaseState {
+    PENDING = 0,
+    APPROVED = 1,
+    REJECTED = 2
+}
+
+struct Case {
+    txAddress: Address,
+    state: CaseState,
+    ruleId: Id,
 }
 
 contract Koku {
-    groups: std::collections::MTreeMap<Id, Group>;
-    persons: std::collections::MTreeMap<Address, Id>;
-    rules: std::collections::MTreeMap<ContractAddress, Id>;
+    roles: std::collections::MTreeMap<Address, Role>;
+    users: std::collections::MTreeMap<Address, ContractAddress>;
+    cases: std::collections::MTreeMap<Address, Case>;
+    rules: std::collections::MTreeMap<Id, ContractAddress>;
 
     pub fn new() -> Self {
         Self {
-            groups: MTreeMap,
-            persons: MTreeMap,
-            rules: MTreeMap
+            roles: MTreeMap,
+            users: MTreeMap,
+            cases: MTreeMap,
+            rules: MTreeMap,
         }
     }
 
-    pub fn create_group(mut self, id: Id, role: Role) {
-        self.groups.insert(id, Group {id: id, role: role});
+    pub fn attach_user_to_contract(mut self, addr: Address, role: Role, contractAddr: ContractAddress) {
+        self.roles.insert(addr, role);
+        self.users.insert(addr, contractAddr);
     }
 
-    pub fn attach_rule_to_group(mut self, rule: ContractAddress, groupId: Id) {
+    pub fn detach_user_from_contract(mut self, addr: Address, contractAddr: ContractAddress) {
         require(
-            self.groups.contains(groupId),
-            "group should be exist",
+            self.users.contains(addr),
+            "user should be exist",
         );
-        self.rules.insert(rule, groupId);
+        self.roles.remove(addr);
+        self.users.remove(addr);
     }
 
-    pub fn detach_rule_from_group(mut self, rule: ContractAddress) {
+    pub fn get_role_by_contract(self, addr: Address, contractAddr: ContractAddress) -> Role{
         require(
-            self.rules.contains(rule),
-            "rule should be exist",
+            self.users.contains(addr),
+            "user should be exist",
         );
-        self.rules.remove(rule);
+        let (role, _) = self.roles.get(addr);
+        role
     }
 
-    pub fn attach_person_to_group(mut self, address: Address, groupId: Id) {
+    pub fn prosecution(mut self, txAddress: Address, ruleId: Id) {
+        // -- Permission check --
+        // prosecution must be invoked by Executor.
         require(
-            self.groups.contains(groupId),
-            "group should be exist",
+            self.users.contains(zksync::msg.sender),
+            "sender should be registered",
         );
-        self.persons.insert(address, groupId);
+        let (role, _) = self.roles.get(zksync::msg.sender);
+        require(role != Role::EXECUTOR, "sender should be legislator");
     }
 
-    pub fn detach_person_from_group(mut self, address: Address) {
+    pub fn legislate(mut self, roleId: Id, contractAddr: ContractAddress) {
+        // -- Permission check --
+        // legislate must be invoked by Legislator.
         require(
-            self.persons.contains(address),
-            "address should be exist",
+            self.users.contains(zksync::msg.sender),
+            "sender should be registered",
         );
-        self.persons.remove(address);
+        let (role, _) = self.roles.get(zksync::msg.sender);
+        require(role != Role::LEGISLATOR, "sender should be legislator");
+        // ----
+
+        // legislator make a rule.
+        self.rules.insert(roleId, contractAddr);
     }
 
-    pub fn get_group(self, groupId: Id) -> Group{
-        let (group, exist) = self.groups.get(groupId);
-        group
-    }
-
-    pub fn get_group_by_person(self, address: Address) -> Group{
+    pub fn judge(mut self, txAddress: Address, approve: bool) {
+        // -- Permission check --
+        // prosecution must be invoked by judgement.
         require(
-            self.persons.contains(address),
-            "address should be exist",
+            self.users.contains(zksync::msg.sender),
+            "sender should be registered",
         );
-        let (groupId, _) = self.persons.get(address);
-        let (group, exist) = self.groups.get(groupId);
-        group
-    }
+        let (role, _) = self.roles.get(zksync::msg.sender);
+        require(role != Role::JUDGEMENT, "sender should be judgement");
+        // ----
 
-    pub fn get_group_by_rule(self, rule: ContractAddress) -> Group{
+        // judgement judge the tx with rule / own decision.
+        // 1) Is the case existing?
         require(
-            self.rules.contains(rule),
-            "address should be exist",
+            self.cases.contains(txAddress),
+            "case should be registered",
         );
-        let (groupId, _) = self.rules.get(rule);
-        let (group, exist) = self.groups.get(groupId);
-        group
-    }
+        let (case, _) = self.cases.get(zksync::msg.sender);
+        // 2) Is the case based on rules?
+        require(
+            self.rules.contains(case.ruleId),
+            "rule should be registered",
+        );
+        let (ruleAddr, _) = self.rules.get(case.ruleId);
+        
+        self.cases.remove(txAddress);    
 
+        // TODO: I want to invoke another contract!!
+        // let instance = AnotherContract::fetch(ruleAddr); 
+        // 3) Judge by rule
+        // let result = instance.judge(txAddress);
+
+        // 4) Judge by rule and own decision.
+        // if result && approve { // Approved
+        if approve { // Approved
+            self.cases.insert(txAddress, Case {
+                txAddress: txAddress,
+                state: CaseState::APPROVED,
+                ruleId: case.ruleId,
+            });
+        } else { // Rejeted
+            self.cases.insert(txAddress, Case {
+                txAddress: txAddress,
+                state: CaseState::REJECTED,
+                ruleId: case.ruleId,
+            });
+        }
+    }
 }
 
 #[test]
