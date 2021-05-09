@@ -1,16 +1,25 @@
 <template>
+<div>
+  <div class="flex shadow-lg items-center md:justify-between py-3 px-4" >
+    <img class="h-12" src="/img/logo.png" />
+    <div v-if="state.isLogged">
+      Address: <b>{{ state.account.address.substring(0, 8) }}</b>
+    </div>
+    <div v-else>
+      <button class="bg-gray-200 rounded p-3" @click="login">LOGIN</button>
+    </div>
+  </div>
   <div class="container">
     <div>
-      <h1 class="title">
-        koku
-      </h1>
-      <div class="links">
+      <img class="top" src="/img/logo.png" />
+      <console div v-if="state.isLogged" />
+      <div v-else>
         <button class="bg-gray-200 rounded p-3" @click="login">LOGIN</button>
-        <p>I am {{ state.account.address }}!</p>
-        <p>I have {{ state.account.balance }} eth!</p>
+        <p>KOKU is the sandbox of distributed authority on Blockchain<br/>(Executor, Legislator, and Judgement)</p>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script lang="ts">
@@ -22,23 +31,29 @@ import {
 } from "@vue/composition-api";
 import accountModule, { Account } from "@/store/modules/account"
 import { Web3Service } from "@/service/web3"
+import Console from "@/components/console.vue"
 
 export default defineComponent({
-  components: {},
+  components: {
+    Console
+  },
   setup(_: any, _2: SetupContext) {
     const web3Service = new Web3Service();
     const state = reactive({
-      account: new Account(null, null)
+      account: new Account(null, null),
+      isLogged: false,
     });
     onMounted(async () => {
       web3Service.init(() => {
         state.account = accountModule.account;
+        state.isLogged = true;
       });
     });
     const login = () => {
       console.log("login")
       web3Service.connectWallet(() => {
         state.account = accountModule.account;
+        state.isLogged = true;
       });
     }
     return {
@@ -64,22 +79,9 @@ export default defineComponent({
   text-align: center;
 }
 
-.title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
+.top { 
+  margin: auto;
+  width: 300px;
 }
 
 .subtitle {
