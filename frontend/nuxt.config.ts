@@ -40,7 +40,11 @@ const config: Configuration = {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
-    { src: "@/plugins/composition-api" } // Used by vue codes
+    { src: "@/plugins/composition-api" }, // Used by vue codes
+    {
+      src: "@/plugins/vue-js-modal.js",
+      ssr: false
+    },
   ],
   /*
   ** Auto import components
