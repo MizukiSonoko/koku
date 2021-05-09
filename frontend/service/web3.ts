@@ -29,7 +29,6 @@ export class Web3Service {
 
   public connectWallet (callback: Function) {
     this.init(callback);
-    console.log("window", window);
     if (window.ethereum) {
       window.ethereum.enable().then((accounts: string[]) => {
         this.web3.eth.getBalance(accounts[0]).then((balance: string) => {
@@ -39,18 +38,14 @@ export class Web3Service {
               .toFixed(3)
               .toLocaleString()
           };
-          console.log(data);
           accountModule.updateAccount(new Account(data.account, data.balance));
           callback();
         });
       });
     }
     
-    console.log("web3", this.web3)
     this.web3.eth.getAccounts().then((accounts: string[]) => {
-      console.log("accounts", accounts);
       if (accounts.length && accounts[0]) {
-        console.log("utils", this.web3.eth);
         this.web3.eth.getBalance(accounts[0]).then((balance: string) => {
           const data = {
             account: accounts[0],
@@ -58,7 +53,6 @@ export class Web3Service {
               .toFixed(5)
               .toLocaleString()
           };
-          console.log(data);
           accountModule.updateAccount(new Account(data.account, data.balance));
         });
       }
