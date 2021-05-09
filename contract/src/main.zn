@@ -55,7 +55,7 @@ contract Koku {
         self.users.remove(addr);
     }
 
-    pub fn get_role_by_contract(self, addr: Address, contractAddr: ContractAddress) -> Role{
+    pub fn get_role_by_user(self, addr: Address, contractAddr: ContractAddress) -> Role{
         require(
             self.users.contains(addr),
             "user should be exist",
@@ -64,41 +64,54 @@ contract Koku {
         role
     }
 
-    pub fn prosecution(mut self, txAddress: Address, ruleId: Id) {
-        // -- Permission check --
-        // prosecution must be invoked by Executor.
+    pub fn get_case_by_tx(self, txAddress: Address) -> Case {
         require(
-            self.users.contains(zksync::msg.sender),
-            "sender should be registered",
+            self.cases.contains(txAddress),
+            "case should be exist",
         );
-        let (role, _) = self.roles.get(zksync::msg.sender);
-        require(role != Role::EXECUTOR, "sender should be legislator");
+        let (case, _) = self.cases.get(txAddress);
+        case
+    }
+
+    pub fn get_rules_by_id(self, id: Id) -> ContractAddress{
+        require(
+            self.rules.contains(id),
+            "rule should be exist",
+        );
+        let (rule, _) = self.rules.get(id);
+        rule
+    }
+
+    pub fn prosecute(mut self, txAddress: Address, contractAddr: ContractAddress, ruleId: Id) {
+        // -- Permission check --
+        // prosecute must be invoked by Executor.
+        let role = self.get_role_by_user(zksync::msg.sender, contractAddr);
+        require(role == Role::EXECUTOR, "sender should be executor");
+
+        self.cases.insert(txAddress, Case {
+            txAddress: txAddress,
+            state: CaseState::APPROVED,
+            ruleId: ruleId,
+        });
     }
 
     pub fn legislate(mut self, roleId: Id, contractAddr: ContractAddress) {
         // -- Permission check --
         // legislate must be invoked by Legislator.
-        require(
-            self.users.contains(zksync::msg.sender),
-            "sender should be registered",
-        );
-        let (role, _) = self.roles.get(zksync::msg.sender);
-        require(role != Role::LEGISLATOR, "sender should be legislator");
+        let role = self.get_role_by_user(zksync::msg.sender, contractAddr);
+        require(role == Role::LEGISLATOR, "sender should be legislator");
         // ----
+
 
         // legislator make a rule.
         self.rules.insert(roleId, contractAddr);
     }
 
-    pub fn judge(mut self, txAddress: Address, approve: bool) {
+    pub fn judge(mut self, txAddress: Address, contractAddr: ContractAddress, approve: bool) {
         // -- Permission check --
         // prosecution must be invoked by judgement.
-        require(
-            self.users.contains(zksync::msg.sender),
-            "sender should be registered",
-        );
-        let (role, _) = self.roles.get(zksync::msg.sender);
-        require(role != Role::JUDGEMENT, "sender should be judgement");
+        let role = self.get_role_by_user(zksync::msg.sender, contractAddr);
+        require(role == Role::JUDGEMENT, "sender should be judgement");
         // ----
 
         // judgement judge the tx with rule / own decision.
