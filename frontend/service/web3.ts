@@ -68,9 +68,9 @@ export class Web3Service {
   public sign() {
     const address = accountModule.account.address
     if(address) {
-      console.log("sign", this.web3.eth.signTransaction("PPOP", address, (ret: any) => {
-        console.log("signed ret", ret)
-      }))
+      // console.log("sign", this.web3.eth.signTransaction("PPOP", address, (ret: any) => {
+      //  console.log("signed ret", ret)
+      //}))
     }
   }
 
