@@ -26,6 +26,10 @@ const config: Configuration = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  generate: {
+    fallback: true,
+    routes: ["/"]
+  },
   /*
   ** Global CSS
   */
