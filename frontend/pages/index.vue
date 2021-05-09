@@ -12,7 +12,7 @@
   <div class="container">
     <div>
       <img class="top" src="/img/logo.png" />
-      <console div v-if="state.isLogged" />
+      <Console div v-if="state.isLogged" />
       <div v-else>
         <button class="bg-gray-200 rounded p-3" @click="login">LOGIN</button>
         <p>KOKU is the sandbox of distributed authority on Blockchain<br/>(Executor, Legislator, and Judgement)</p>

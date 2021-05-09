@@ -33,7 +33,8 @@ export default defineComponent({
     });
     const makeToken = () => {
       console.log("makeToken");
-      ctx.root.$modal.show("team-add-confirm-modal");
+      console.log(ctx.root)
+      ctx.root.$modal.show("make-token-modal");
     }
     onMounted(async () => {
     });
