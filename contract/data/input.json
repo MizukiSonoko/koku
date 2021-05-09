@@ -4,18 +4,45 @@
     "0x0000000000000000000000000000000000000000": [
       "0x0",
       [],
-      "0"
+      [],
+      [],
+      []
     ]
   },
   "msg": {
-    "sender": "0x0000000000000000000000000000000000000000",
-    "recipient": "0x0000000000000000000000000000000000000000",
+    "sender": "0xDB10E4a083B87e803594c12c679422dCe5FCCCB9",
+    "recipient": "0x7093fd6f2aba247610714557ea09c02cfaac9892",
     "token_address": "0x0000000000000000000000000000000000000000",
-    "amount": "0"
+    "amount": "0.1_E18"
   },
   "arguments": {
-    "new": {
-      "value": "0"
+    "get_group": {
+      "groupId": "1"
+    },
+    "create_group": {
+      "id": "1",
+      "role": "EXECUTOR"
+    },
+    "attach_person_to_group": {
+      "address": "0x0",
+      "groupId": "0"
+    },
+    "detach_person_from_group": {
+      "address": "0x0"
+    },
+    "new": {},
+    "get_group_by_person": {
+      "address": "0x0"
+    },
+    "attach_rule_to_group": {
+      "rule": "0x0",
+      "groupId": "0"
+    },
+    "detach_rule_from_group": {
+      "rule": "0x0"
+    },
+    "get_group_by_rule": {
+      "rule": "0x0"
     }
   }
 }
