@@ -19,6 +19,7 @@
       </div>
     </div>
   </div>
+  <MakeTokenModal />
 </div>
 </template>
 
@@ -31,11 +32,13 @@ import {
 } from "@vue/composition-api";
 import accountModule, { Account } from "@/store/modules/account"
 import { Web3Service } from "@/service/web3"
-import Console from "@/components/console.vue"
+import Console from "@/components/Console.vue"
+import MakeTokenModal from "@/components/MakeTokenModal.vue"
 
 export default defineComponent({
   components: {
-    Console
+    Console,
+    MakeTokenModal
   },
   setup(_: any, _2: SetupContext) {
     const web3Service = new Web3Service();
@@ -50,7 +53,6 @@ export default defineComponent({
       });
     });
     const login = () => {
-      console.log("login")
       web3Service.connectWallet(() => {
         state.account = accountModule.account;
         state.isLogged = true;
