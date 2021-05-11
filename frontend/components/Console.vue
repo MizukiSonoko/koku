@@ -2,12 +2,6 @@
 <div>
   <div class="shadow-lg w-full items-center py-3 px-4" >
     <div class="my-4 mx-4">
-        <span class="text-2xl">Make token</span>
-        <ul class="list-inside bg-rose-200">
-          <button @click="makeToken" class="bg-gray-300 p-2 rounded">Make</button>
-        </ul>
-    </div>
-    <div class="my-4 mx-4">
       <span class="text-2xl">Attach user to contract</span>
       <div class="flex items-center">
           <label
@@ -19,7 +13,7 @@
             id="name"
             name="name"
             class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="name"
+            type="text"
             placeholder="0x...."
           />
           <label
@@ -45,7 +39,7 @@
             id="name"
             name="name"
             class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="name"
+            type="text"
             placeholder="0x...."
           />
         <button @click="call" class="p-2 mx-4 mb-2 my-auto bg-gray-300 rounded">Execute!</button>
@@ -64,7 +58,7 @@
             id="name"
             name="name"
             class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="name"
+            type="text"
             placeholder="0x...."
           />
           <label
@@ -76,7 +70,7 @@
             id="name"
             name="name"
             class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="name"
+            type="text"
             placeholder="0x...."
           />
           <label
@@ -88,7 +82,7 @@
             id="name"
             name="name"
             class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="name"
+            type="text"
             placeholder="0x...."
           />
         <button @click="call" class="p-2 mx-4 mb-2 my-auto bg-gray-300 rounded">Execute!</button>
@@ -107,7 +101,7 @@
             id="name"
             name="name"
             class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="name"
+            type="text"
             placeholder="0x...."
           />
           <label
@@ -119,7 +113,7 @@
             id="name"
             name="name"
             class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="name"
+            type="text"
             placeholder="0x...."
           />
         <button @click="call" class="p-2 mx-4 mb-2 my-auto bg-gray-300 rounded">Execute!</button>
@@ -139,7 +133,7 @@
             id="name"
             name="name"
             class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="name"
+            type="text"
             placeholder="0x...."
           />
           <label
