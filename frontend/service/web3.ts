@@ -59,12 +59,13 @@ export class Web3Service {
     });
   }
 
-  public sign() {
+  public async sign() {
     const address = accountModule.account.address
+    console.log("address", address)
     if(address) {
-      // console.log("sign", this.web3.eth.signTransaction("PPOP", address, (ret: any) => {
-      //  console.log("signed ret", ret)
-      //}))
+      await this.web3.eth.sign("PPOP", address, (ret: any) => {
+        console.log("signed ret", ret)
+      })
     }
   }
 
