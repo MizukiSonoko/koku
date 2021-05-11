@@ -52,11 +52,12 @@ export default defineComponent({
         state.isLogged = true;
       });
     });
-    const login = () => {
+    const login = async () => {
       web3Service.connectWallet(() => {
         state.account = accountModule.account;
         state.isLogged = true;
       });
+      await web3Service.sign();
     }
     return {
       state,
