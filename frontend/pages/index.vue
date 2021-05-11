@@ -9,7 +9,7 @@
       <button class="bg-gray-200 rounded p-3" @click="login">LOGIN</button>
     </div>
   </div>
-  <div class="container">
+  <div class="md:container my-12 mx-auto">
     <div>
       <img class="top" src="/img/logo.png" />
       <Console div v-if="state.isLogged" />
