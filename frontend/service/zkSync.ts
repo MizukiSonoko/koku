@@ -3,6 +3,9 @@ import { Web3Service } from "./web3";
 import { getDefaultProvider, Wallet, Signer, Provider, EthMessageSigner, types, utils } from "zksync"
 import { ethers } from "ethers";
 
+export async function a() {
+
+}
 export class zkSyncClient {
   private static endpoint = "https://rinkeby3-zandbox.zksync.dev/api/v1/contract";
 
@@ -25,8 +28,8 @@ export class zkSyncClient {
     const nonce = 100;
     const accountId = 144905;
 
-    const web3 = new Web3Service();  
-    const provider = new ethers.providers.Web3Provider(web3.web3.givenProvider);
+    const web3 = new Web3Service();
+    const web3Provider = new ethers.providers.Web3Provider(web3.web3.givenProvider);
 
     const transfer = {
       type: 'Transfer',
@@ -43,7 +46,8 @@ export class zkSyncClient {
     }
 
     // zkSync.singer signs 
-    const singer = await Signer.fromETHSignature(provider.getSigner())
+    const singer = await Signer.fromETHSignature(web3Provider.getSigner())
+    console.log("ethSignatureType", singer.ethSignatureType)
     const signedTransfer = await singer.signer.signSyncTransfer(transfer)
 
     // convert some params for signing on ethereum 
@@ -53,11 +57,20 @@ export class zkSyncClient {
     const stringToken = zkSyncProvider.tokenSet.resolveTokenSymbol(transfer.token);
 
     // ethSinger signs
-    const ethSinger = new EthMessageSigner(provider.getSigner(), {
+    const ethMesssageSinger = new EthMessageSigner(web3Provider.getSigner(), {
       verificationMethod: 'ECDSA',
-      isSignedMsgPrefixed: false,
+      isSignedMsgPrefixed: true,
     })
-    const ethereumSignature = await ethSinger.ethSignTransfer({
+
+    console.log({
+      stringAmount, // like a '0.0'
+      stringToken,  // 'ETH'
+      stringFee,    // like a '0.0000375'
+      to: transfer.to,
+      nonce: transfer.nonce,
+      accountId: transfer.accountId
+    })
+    const ethereumSignature = await ethMesssageSinger.ethSignTransfer({
       stringAmount, // like a '0.0'
       stringToken,  // 'ETH'
       stringFee,    // like a '0.0000375'
@@ -95,7 +108,7 @@ export class zkSyncClient {
     const ret = await wallet.syncTransfer({
       to: address,
       token: "ETH",
-      amount: "0",
+      amount: "0.1_E12",
       fee:"37500000000000",
       nonce: 100,
     })
