@@ -12449,17 +12449,17 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zksync-crypto@^0.5.4:
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/zksync-crypto/-/zksync-crypto-0.5.4.tgz#6b3ca224ce35bbf1843f20ffa526651c45000e03"
-  integrity sha512-E5TrDnOijfbyqt3J38iYtqsSdytB68FsEEgiTd/YPVeF6Q1Fp+4ecVlUs+FlelY/OTRpWNkSLD9HGug1GpXHcw==
+zksync-crypto@^0.6.0-beta.0:
+  version "0.6.0-beta.0"
+  resolved "https://registry.yarnpkg.com/zksync-crypto/-/zksync-crypto-0.6.0-beta.0.tgz#b4eeec3593f4dde9b4bc99aaab87acc672bb729f"
+  integrity sha512-yUOBw90ys/nmc01eTPBjyBOmXAiWb3vCT83YC2mh+0v+g4Xrg6BOiS3Wp2AgTn1I9B4U6kNctSxnAMjUXpEPgQ==
 
-zksync@^0.10.9:
-  version "0.10.9"
-  resolved "https://registry.yarnpkg.com/zksync/-/zksync-0.10.9.tgz#912ec2d7b11e6ba4a086e393d93944aabc2217c1"
-  integrity sha512-8esbcCvQ48a+5iXMrR0VPVy2P149sULKdBXlXQaxcVueGUjsMFE1DsM+xoJhcyufy8quuENg9LkheZWNqPTkFQ==
+zksync@^0.11.0-beta.1:
+  version "0.11.0-beta.1"
+  resolved "https://registry.yarnpkg.com/zksync/-/zksync-0.11.0-beta.1.tgz#926aeafeac38660280d1f75fee790fc91c9bc61b"
+  integrity sha512-VuGGHL5u2opVTHaIQgIq0/eA3+xSMkv0jkZctbuEsBXdSHEjUmmQkB22HrUMsJquvE/9vdQzvUZUwdK4dYDO5A==
   dependencies:
     axios "^0.21.1"
     websocket "^1.0.30"
     websocket-as-promised "^1.1.0"
-    zksync-crypto "^0.5.4"
+    zksync-crypto "^0.6.0-beta.0"
