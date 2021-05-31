@@ -4,152 +4,14 @@
     <div class="my-4 mx-4">
       <span class="text-2xl">Attach user to contract</span>
       <div class="flex items-center">
-          <label
-            class="block uppercase tracking-wide text-gray-700 font-bold mb-2 mx-4"
-          >
-            User Address is 
-          </label>
-          <input
-            id="name"
-            name="name"
-            class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="text"
-            placeholder="0x...."
-          />
-          <label
-            class="block uppercase tracking-wide text-gray-700 font-bold mb-2 ml-6 mr-4"
-          >
-            Role is
-          </label>
-          <select
-            type="text"
-            class="border text-black rounded py-3 px-4 mb-3 "
-            placeholder="Executor"
-          >
-            <option value="executor">Executor</option>
-            <option value="legislator">Legislator</option>
-            <option value="judgement">Judgement</option>
-          </select>
-          <label
-            class="block uppercase tracking-wide text-gray-700 font-bold mb-2 ml-6 mr-4"
-          >
-            Contract is
-          </label>
-          <input
-            id="name"
-            name="name"
-            class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="text"
-            placeholder="0x...."
-          />
-        <button @click="call" class="p-2 mx-4 mb-2 my-auto bg-gray-300 rounded">Execute!</button>
-      </div>
-    </div>
-    <hr/>
-    <div class="my-4 mx-4">
-      <span class="text-2xl">Prosecute</span>
-      <div class="flex items-center">
-          <label
-            class="block uppercase tracking-wide text-sm text-gray-700 font-bold mb-2 mx-4"
-          >
-            Target TxAddress is 
-          </label>
-          <input
-            id="name"
-            name="name"
-            class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="text"
-            placeholder="0x...."
-          />
-          <label
-            class="block uppercase tracking-wide text-sm text-gray-700 font-bold mb-2 ml-6 mr-4"
-          >
-            Contract Address is
-          </label>
-          <input
-            id="name"
-            name="name"
-            class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="text"
-            placeholder="0x...."
-          />
-          <label
-            class="block uppercase tracking-wide text-sm text-gray-700 font-bold mb-2 ml-6 mr-4"
-          >
-            Underlying Rule is
-          </label>
-          <input
-            id="name"
-            name="name"
-            class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="text"
-            placeholder="0x...."
-          />
-        <button @click="call" class="p-2 mx-4 mb-2 my-auto bg-gray-300 rounded">Execute!</button>
-      </div>
-    </div>
-    <hr/>
-    <div class="my-4 mx-4">
-      <span class="text-2xl">Legislate</span>
-      <div class="flex items-center">
-          <label
-            class="block uppercase tracking-wide text-sm text-gray-700 font-bold mb-2 mx-4"
-          >
-            Rule ID is 
-          </label>
-          <input
-            id="name"
-            name="name"
-            class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="text"
-            placeholder="0x...."
-          />
-          <label
-            class="block uppercase tracking-wide text-sm text-gray-700 font-bold mb-2 ml-6 mr-4"
-          >
-            Rule Contract Address is
-          </label>
-          <input
-            id="name"
-            name="name"
-            class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="text"
-            placeholder="0x...."
-          />
-        <button @click="call" class="p-2 mx-4 mb-2 my-auto bg-gray-300 rounded">Execute!</button>
-      </div>
-    </div>
-    <hr/>
-
-    <div class="my-4 mx-4">
-      <span class="text-2xl">Judge</span>
-      <div class="flex items-center">
-          <label
-            class="block uppercase tracking-wide text-sm text-gray-700 font-bold mb-2 mx-4"
-          >
-            Target TxAddress is 
-          </label>
-          <input
-            id="name"
-            name="name"
-            class="appearance-none block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            type="text"
-            placeholder="0x...."
-          />
-          <label
-            class="block uppercase tracking-wide text-sm text-gray-700 font-bold mb-2 ml-6 mr-4"
-          >
-            Contract Address is
-          </label>
-          <select
-            type="text"
-            class="border text-black rounded py-3 px-4 mb-3 "
-            placeholder="approve"
-          >
-            <option value="approve">Approve</option>
-            <option value="reject">Reject</option>
-          </select>
-          <button @click="call" class="p-2 mx-4 mb-2 my-auto bg-gray-300 rounded">Execute!</button>
+        <label
+          class="block uppercase tracking-wide text-gray-700 font-bold mb-2 mx-4"
+        >
+          MintNFT
+        </label>
+        <button @click="call" class="p-2 mx-4 mb-2 my-auto bg-gray-300 rounded">MintNFT!</button>
+        <button @click="check" class="p-2 mx-4 mb-2 my-auto bg-gray-300 rounded">Check!</button>
+        <button @click="transfer" class="p-2 mx-4 mb-2 my-auto bg-gray-300 rounded">transfer!</button>
       </div>
     </div>
     <hr/>
@@ -180,6 +42,7 @@ export default defineComponent({
     const web3 = new Web3Service();
     const zkSync = new zkSyncClient();
     const state = reactive({
+      nft: null as any
     });
     const makeToken = () => {
       console.log("makeToken");
@@ -190,14 +53,15 @@ export default defineComponent({
     const call = () => {
       //zkSyncClient.transfer("0xe42f074b93b62ede40d4a2336f7ea99d98b38122")
       // return
-      zkSyncClient.call(
-        "0xDB10E4a083B87e803594c12c679422dCe5FCCCB9",
-        "0xe42f074b93b62ede40d4a2336f7ea99d98b38122",
-        "legislate",
-        {
-          "roleId": "100",
-          "contractAddr": "0x0000000000000000000000000000000000097531"
-        });
+      zkSyncClient.mintNFT();
+    }
+    const check = async () => {
+      state.nft = await zkSyncClient.check();
+    }
+    const transfer = async () => {
+      const nft = await zkSyncClient.check();
+      console.log("NFT", nft)
+      zkSyncClient.transferNFT("0x4Ac5EC62CeA97De5cF3a58BD9EF41FfAe911363D", nft)
     }
     onMounted(async () => {
       zkSyncClient.query("0xe42f074b93b62ede40d4a2336f7ea99d98b38122", "get_rules_by_id", {
@@ -207,7 +71,9 @@ export default defineComponent({
     return {
       state,
       makeToken,
-      call
+      call,
+      check,
+      transfer
     };
   }
 });

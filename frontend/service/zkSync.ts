@@ -115,20 +115,87 @@ export class zkSyncClient {
     console.log(ret)
     return;
   }
-  /*
-  tx: {
-    accountId: 34315
-    amount: "0"
-    fee: "37500000000000"
-    from: "0xDB10E4a083B87e803594c12c679422dCe5FCCCB9"
-    nonce: 100
-    signature: {pubKey: "c3aea0e0dd5c846554a313444a64a6c53075a8e4de9d5225805626e26d71e80e", signature: "9e90efea87735715c2100e60a6bfdbb83b1e81225f2faa8137…7b617d33b6169faf0f39bbe85103f895ebfebed3908853e00"}
-    to: "0xe42f074b93b62ede40d4a2336f7ea99d98b38122"
-    token: 0
-    tokenId: 0
-    type: "Transfer"
-    validFrom: 0
-    validUntil: 4294967295
+
+  public static async transferNFT(adderess: string, nft: types.NFT) {
+    console.log("transferNFT")
+    const feeToken = "ETH";
+    const web3 = new Web3Service();  
+    const provider = new ethers.providers.Web3Provider(web3.web3.givenProvider);
+    const zkSyncProvider = await getDefaultProvider("ropsten");
+    const wallet = await Wallet.fromEthSigner(provider.getSigner(), zkSyncProvider)
+    const totalFee  = await zkSyncProvider.getTransactionFee("MintNFT", wallet.address(), feeToken);
+
+    console.log("SyncTransferNFT", nft)
+    const resp = await wallet.syncTransferNFT({
+        to: adderess,
+        token: nft,
+        feeToken: "ETH",
+        fee: totalFee.totalFee,
+    })
+    console.log(resp);
   }
-  */
+
+  public static async check(): Promise<types.NFT>{
+    console.log("check")
+    const web3 = new Web3Service();  
+    const provider = new ethers.providers.Web3Provider(web3.web3.givenProvider);
+    const zkSyncProvider = await getDefaultProvider("ropsten");
+    const wallet = await Wallet.fromEthSigner(provider.getSigner(), zkSyncProvider)
+    // Get state of account
+    const state = await wallet.getAccountState();
+    console.log("committed nfts", state.committed.nfts);
+    console.log("verified nfts", state.verified.nfts);
+    return state.committed.nfts["65540"];
+  }
+
+  public static async mintNFT() {
+    console.log("make")
+    const web3 = new Web3Service();  
+    const provider = new ethers.providers.Web3Provider(web3.web3.givenProvider);
+    const zkSyncProvider = await getDefaultProvider("ropsten");
+
+    const wallet = await Wallet.fromEthSigner(provider.getSigner(), zkSyncProvider)
+    console.log(zkSyncProvider)
+    console.log(wallet)
+    console.log("getAccountState", await wallet.getAccountState())
+    console.log("getAccountId", await wallet.getAccountId())
+    console.log("getNonce", await wallet.getNonce())
+  
+    if (! await wallet.isSigningKeySet()) {
+      const onchainAuthTransaction = await wallet.onchainAuthSigningKey();
+      // Wait till transaction is committed on ethereum.
+      await onchainAuthTransaction.wait();
+      const changePubkey = await wallet.setSigningKey({
+          feeToken: "ETH",
+          ethAuthType: "ECDSA"
+      });
+      // Wait till transaction is committed
+      const receipt = await changePubkey.awaitReceipt();
+      console.log("receipt", receipt)
+    }else {
+      console.log("isSigningKeySet",await wallet.isSigningKeySet())
+    }
+    
+    console.log("getBalance",await wallet.getBalance("ETH"))
+    console.log("getEthereumBalance", await wallet.getEthereumBalance("ETH"))
+    const feeToken = "ETH";
+    const totalFee  = await zkSyncProvider.getTransactionFee("MintNFT", wallet.address(), feeToken);
+    const contentHash = "0x0101010101010101010101010101010101010101010101010101010101010101"
+    const nft = await wallet.mintNFT({
+        recipient: wallet.address(),
+        contentHash,
+        feeToken: "ETH",
+        fee: totalFee.totalFee,
+    })
+    console.log("nft", nft)
+    const receipt = await nft.awaitReceipt();
+    console.log("receipt", receipt)
+
+    // Get state of account
+    const state = await wallet.getAccountState();
+    console.log(state.committed.nfts);
+    console.log(state.verified.nfts);
+    return;
+  }
+
 }
