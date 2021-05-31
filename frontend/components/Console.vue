@@ -40,6 +40,7 @@ export default defineComponent({
   setup(_: any, ctx: SetupContext) {
     console.log(ctx)
     const web3 = new Web3Service();
+    const zkClient = new zkSyncClient();
     const zkSync = new zkSyncClient();
     const state = reactive({
       nft: null as any
@@ -53,20 +54,18 @@ export default defineComponent({
     const call = () => {
       //zkSyncClient.transfer("0xe42f074b93b62ede40d4a2336f7ea99d98b38122")
       // return
-      zkSyncClient.mintNFT();
+      zkClient.mintNFT();
     }
     const check = async () => {
-      state.nft = await zkSyncClient.check();
+      state.nft = await zkClient.check();
+      console.log(state.nft)
     }
     const transfer = async () => {
-      const nft = await zkSyncClient.check();
+      const nft = await zkClient.check();
       console.log("NFT", nft)
-      zkSyncClient.transferNFT("0x4Ac5EC62CeA97De5cF3a58BD9EF41FfAe911363D", nft)
+      zkClient.transferNFT("0x4Ac5EC62CeA97De5cF3a58BD9EF41FfAe911363D", nft[0])
     }
     onMounted(async () => {
-      zkSyncClient.query("0xe42f074b93b62ede40d4a2336f7ea99d98b38122", "get_rules_by_id", {
-        "id": "100"
-      })
     });
     return {
       state,
