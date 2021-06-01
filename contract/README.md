@@ -1,22 +1,22 @@
 
 ```shell
 $ zargo publish --instance default --network rinkeby
-   Compiling koku v0.1.1
+   Compiling koku v0.4.0
     Finished release [optimized] target
-   Uploading the instance `default` of `koku v0.1.1` to network `rinkeby`
-     Address 0x7093fd6f2aba247610714557ea09c02cfaac9892
-  Account ID 139749
+   Uploading the instance `default` of `koku v0.4.0` to network `rinkeby`
+     Address 0x84407aaf4998167f8f26dde873c67d36205134b8
+  Account ID 144905
 ```
 
 ```shell
-$ zargo query --address 0x7093fd6f2aba247610714557ea09c02cfaac9892 --network rinkeby
-    Querying the storage of the contract `koku v0.1.1` with address 0x7093fd6f2aba247610714557ea09c02cfaac9892 on network `rinkeby`
+$ zargo query --address 0xd1ce984f52bab9a2222ffd24b816453144effeef --network rinkeby
+    Querying the storage of the contract `koku v0.2.0` with address 0xd1ce984f52bab9a2222ffd24b816453144effeef on network `rinkeby`
 {
-  "address": "0x7093fd6f2aba247610714557ea09c02cfaac9892",
+  "address": "0xd1ce984f52bab9a2222ffd24b816453144effeef",
   "balances": [
     {
       "key": "0x0",
-      "value": "62900000000000"
+      "value": "65400000000000"
     }
   ]
 }
@@ -31,7 +31,7 @@ $ zargo query --network rinkeby --address 0x7093fd6f2aba247610714557ea09c02cfaac
 ```
 
 ```shell
-zargo call --network rinkeby --address 0x7093fd6f2aba247610714557ea09c02cfaac9892 --method create_group
+zargo call --network rinkeby --address 0xd1ce984f52bab9a2222ffd24b816453144effeef --method attach_user_to_contract
      Calling method `create_group` of the contract `koku v0.1.1` with address 0x7093fd6f2aba247610714557ea09c02cfaac9892 on network `rinkeby`
 {
   "output": {
@@ -40,24 +40,6 @@ zargo call --network rinkeby --address 0x7093fd6f2aba247610714557ea09c02cfaac989
   }
 }
 ```
-
-curl 'https://rinkeby3-zandbox.zksync.dev/api/v1/contract/query?address=0x7093fd6f2aba247610714557ea09c02cfaac9892&method=get_group' \
-  -X 'PUT' \
-  -H 'authority: rinkeby3-zandbox.zksync.dev' \
-  -H 'sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"' \
-  -H 'accept: application/json, text/plain, */*' \
-  -H 'dnt: 1' \
-  -H 'sec-ch-ua-mobile: ?1' \
-  -H 'user-agent: Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Mobile Safari/537.36' \
-  -H 'content-type: application/json;charset=UTF-8' \
-  -H 'origin: http://localhost:3000' \
-  -H 'sec-fetch-site: cross-site' \
-  -H 'sec-fetch-mode: cors' \
-  -H 'sec-fetch-dest: empty' \
-  -H 'referer: http://localhost:3000/' \
-  -H 'accept-language: ja,en-US;q=0.9,en;q=0.8,ja-JP;q=0.7' \
-  --data-raw '{"headers":{"Content-Type":"application/json"},"data":{"arguments":{"groupId":"0"}},"params":{"arguments":{"groupId":"0"}}}' \
-  --compressed
 
 curl -X PUT -H "Content-Type: application/json" -d '{}' "https://rinkeby3-zandbox.zksync.dev/api/v1/contract/query?address=0x7093fd6f2aba247610714557ea09c02cfaac9892&method=get_group"
 
