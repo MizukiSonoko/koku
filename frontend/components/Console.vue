@@ -12,6 +12,7 @@
         <button @click="call" class="p-2 mx-4 mb-2 my-auto bg-gray-300 rounded">MintNFT!</button>
         <button @click="check" class="p-2 mx-4 mb-2 my-auto bg-gray-300 rounded">Check!</button>
         <button @click="transfer" class="p-2 mx-4 mb-2 my-auto bg-gray-300 rounded">transfer!</button>
+        <button @click="ipfsAdd" class="p-2 mx-4 mb-2 my-auto bg-gray-300 rounded">IpfsAdd!</button>
       </div>
     </div>
     <hr/>
@@ -34,6 +35,7 @@ import {
 import accountModule, { Account } from "@/store/modules/account"
 import { Web3Service } from "@/service/web3"
 import { zkSyncClient } from "@/service/zkSync"
+import { ipfsClient } from "@/service/ipfs"
 
 export default defineComponent({
   components: {},
@@ -65,6 +67,11 @@ export default defineComponent({
       console.log("NFT", nft)
       zkClient.transferNFT("0x4Ac5EC62CeA97De5cF3a58BD9EF41FfAe911363D", nft[0])
     }
+
+    const ipfsAdd = async () => {
+      const ipfs = new ipfsClient()
+      ipfs.conv()
+    }
     onMounted(async () => {
     });
     return {
@@ -72,7 +79,8 @@ export default defineComponent({
       makeToken,
       call,
       check,
-      transfer
+      transfer,
+      ipfsAdd
     };
   }
 });
