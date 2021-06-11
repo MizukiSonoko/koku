@@ -1,0 +1,159 @@
+//!
+//! The 'koku' contract entry.
+//!
+use std::collections::MTreeMap;
+
+type Address = u160;
+type ContractAddress = u160;
+type Amount = u248;
+type Id = u64;
+
+enum Role {
+    EXECUTOR = 0,
+    LEGISLATOR = 1,
+    JUDGEMENT = 2
+}
+
+enum CaseState {
+    PENDING = 0,
+    APPROVED = 1,
+    REJECTED = 2
+}
+
+struct Case {
+    txAddress: Address,
+    state: CaseState,
+    ruleId: Id,
+}
+
+contract Koku {
+    roles: std::collections::MTreeMap<Address, Role>;
+    users: std::collections::MTreeMap<Address, ContractAddress>;
+    cases: std::collections::MTreeMap<Address, Case>;
+    rules: std::collections::MTreeMap<Id, ContractAddress>;
+
+    pub fn new() -> Self {
+        Self {
+            roles: MTreeMap,
+            users: MTreeMap,
+            cases: MTreeMap,
+            rules: MTreeMap,
+        }
+    }
+
+    pub fn attach_user_to_contract(mut self, addr: Address, role: Role, contractAddr: ContractAddress) {
+        self.roles.insert(addr, role);
+        self.users.insert(addr, contractAddr);
+    }
+
+    pub fn detach_user_from_contract(mut self, addr: Address, contractAddr: ContractAddress) {
+        require(
+            self.users.contains(addr),
+            "user should be exist",
+        );
+        self.roles.remove(addr);
+        self.users.remove(addr);
+    }
+
+    pub fn get_role_by_user(self, addr: Address, contractAddr: ContractAddress) -> Role{
+        require(
+            self.users.contains(addr),
+            "user should be exist",
+        );
+        let (role, _) = self.roles.get(addr);
+        role
+    }
+
+    pub fn get_case_by_tx(self, txAddress: Address) -> Case {
+        require(
+            self.cases.contains(txAddress),
+            "case should be exist",
+        );
+        let (case, _) = self.cases.get(txAddress);
+        case
+    }
+
+    pub fn get_rules_by_id(self, id: Id) -> ContractAddress{
+        require(
+            self.rules.contains(id),
+            "rule should be exist",
+        );
+        let (rule, _) = self.rules.get(id);
+        rule
+    }
+
+    pub fn prosecute(mut self, txAddress: Address, contractAddr: ContractAddress, ruleId: Id) {
+        // -- Permission check --
+        // prosecute must be invoked by Executor.
+        let role = self.get_role_by_user(zksync::msg.sender, contractAddr);
+        require(role == Role::EXECUTOR, "sender should be executor");
+
+        self.cases.insert(txAddress, Case {
+            txAddress: txAddress,
+            state: CaseState::APPROVED,
+            ruleId: ruleId,
+        });
+    }
+
+    pub fn legislate(mut self, roleId: Id, contractAddr: ContractAddress) {
+        // -- Permission check --
+        // legislate must be invoked by Legislator.
+        let role = self.get_role_by_user(zksync::msg.sender, contractAddr);
+        require(role == Role::LEGISLATOR, "sender should be legislator");
+        // ----
+
+
+        // legislator make a rule.
+        self.rules.insert(roleId, contractAddr);
+    }
+
+    pub fn judge(mut self, txAddress: Address, contractAddr: ContractAddress, approve: bool) {
+        // -- Permission check --
+        // prosecution must be invoked by judgement.
+        let role = self.get_role_by_user(zksync::msg.sender, contractAddr);
+        require(role == Role::JUDGEMENT, "sender should be judgement");
+        // ----
+
+        // judgement judge the tx with rule / own decision.
+        // 1) Is the case existing?
+        require(
+            self.cases.contains(txAddress),
+            "case should be registered",
+        );
+        let (case, _) = self.cases.get(zksync::msg.sender);
+        // 2) Is the case based on rules?
+        require(
+            self.rules.contains(case.ruleId),
+            "rule should be registered",
+        );
+        let (ruleAddr, _) = self.rules.get(case.ruleId);
+        
+        self.cases.remove(txAddress);    
+
+        // TODO: I want to invoke another contract!!
+        // let instance = AnotherContract::fetch(ruleAddr); 
+        // 3) Judge by rule
+        // let result = instance.judge(txAddress);
+
+        // 4) Judge by rule and own decision.
+        // if result && approve { // Approved
+        if approve { // Approved
+            self.cases.insert(txAddress, Case {
+                txAddress: txAddress,
+                state: CaseState::APPROVED,
+                ruleId: case.ruleId,
+            });
+        } else { // Rejeted
+            self.cases.insert(txAddress, Case {
+                txAddress: txAddress,
+                state: CaseState::REJECTED,
+                ruleId: case.ruleId,
+            });
+        }
+    }
+}
+
+#[test]
+fn ordinar() {
+    require(2 + 2 == 4, "The laws of the Universe have been broken");
+}

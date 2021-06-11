@@ -1,0 +1,46 @@
+{
+  "type": "contract",
+  "storages": {
+    "0x0000000000000000000000000000000000000000": [
+      "0x0",
+      [],
+      [],
+      [],
+      []
+    ]
+  },
+  "msg": {
+    "sender": "0xDB10E4a083B87e803594c12c679422dCe5FCCCB9",
+    "recipient": "0xe42f074b93b62ede40d4a2336f7ea99d98b38122",
+    "token_address": "0x0000000000000000000000000000000000000000",
+    "amount": "0.1_E12"
+  },
+  "arguments": {
+    "new": {
+    },
+    "attach_user_to_contract": {
+      "addr": "0x4Ac5EC62CeA97De5cF3a58BD9EF41FfAe911363D",
+      "role": "2",
+      "contractAddr": "0xe53ee624a76a8eae26b2962b0756d8515c039b9e"
+    },
+    "get_role_by_contract": {
+      "addr": "0x4Ac5EC62CeA97De5cF3a58BD9EF41FfAe911363D",
+      "contractAddr": "0xe53ee624a76a8eae26b2962b0756d8515c039b9e"
+    },
+    "get_case_by_tx": {
+      "txAddress": "0x0000000000000000000000000000000000000000"
+    },
+    "get_rules_by_id": {
+      "id": "100"
+    },
+    "legislate": {
+      "roleId": "100",
+      "contractAddr": "0x0000000000000000000000000000000000097531"
+    },
+    "prosecution": {
+      "ruleId": "100",
+      "txAddress": "0x0000000000000000000000000000000000108642",
+      "contractAddr": "0x0000000000000000000000000000000000097531"
+    }
+  }
+}
